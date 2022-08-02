@@ -1,5 +1,8 @@
+import math
+
+
 def get_primes(n: int) -> list:
-    primes = [i for i in range(2, n + 1) if all(True if i % j != 0 else False for j in range(2, i))]
+    primes = [i for i in range(2, n + 1) if all(i % j != 0 for j in range(2, int(math.sqrt(i)) + 1))]
     return primes
 
 

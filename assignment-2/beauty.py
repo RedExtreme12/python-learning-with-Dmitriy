@@ -1,8 +1,5 @@
 def is_beauty(number: int) -> bool:
-    if '0' in str(number) or number <= 0:
-        return False
-    else:
-        return True
+    return not ('0' in str(number) or number <= 0)
 
 
 def get_beauties(k: int) -> tuple[int, int]:
