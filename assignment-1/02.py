@@ -37,6 +37,15 @@ def merge_classic(list_1: list | tuple, list_2: list | tuple) -> list | tuple:
         return result_list
 
 
+def get_next_item(lst: list):
+    try:
+        next_item = lst.pop()
+    except IndexError:
+        next_item = None
+
+    return next_item
+
+
 def merge_without_indexing(list_1: list | tuple, list_2: list | tuple) -> list | tuple:
     result_list = []
 
@@ -51,17 +60,15 @@ def merge_without_indexing(list_1: list | tuple, list_2: list | tuple) -> list |
     while True:
         if pointer_list_1 >= pointer_list_2:
             result_list.append(pointer_list_1)
-            try:
-                pointer_list_1 = list_1.pop()
-            except IndexError:
-                pointer_list_1 = None
+
+            pointer_list_1 = get_next_item(list_1)
+            if not pointer_list_1:
                 break
         else:
             result_list.append(pointer_list_2)
-            try:
-                pointer_list_2 = list_2.pop()
-            except IndexError:
-                pointer_list_2 = None
+
+            pointer_list_2 = get_next_item(list_2)
+            if not pointer_list_2:
                 break
 
     if pointer_list_1:
