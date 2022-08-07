@@ -35,6 +35,20 @@ class TestScalarProduct(unittest.TestCase):
                    'iterable_2': [-1, 1],
                 },
                 'expected': None,
+            },
+            {
+                'arguments': {
+                    'iterable_1': ['0xF', 10],
+                    'iterable_2': [10, 25]
+                },
+                'expected': 400
+            },
+            {
+                'arguments': {
+                    'iterable_1': ['0b10100', 20],
+                    'iterable_2': [10, 10]
+                },
+                'expected': 400
             }
         ]
 
