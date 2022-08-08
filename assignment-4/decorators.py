@@ -1,0 +1,3 @@
+class Memorize:
+
+    pass

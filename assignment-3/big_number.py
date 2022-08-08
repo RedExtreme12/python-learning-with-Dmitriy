@@ -22,7 +22,7 @@ def index(string: str, needle_numbers: tuple[int, ...] | int, k: int = 5) -> tup
         matches = [m.start() + 1 for m in re.finditer(str(needle_number), string)]
         total_matched = len(matches)
         total_occurrences += total_matched
-        found_indices[needle_number] = matches[:k]
+        found_indices[needle_number] = matches
 
         if total_matched > k:
             logger.info(f'Number of occurrences of an element {needle_number} is {total_matched},'
