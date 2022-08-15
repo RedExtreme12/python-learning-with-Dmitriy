@@ -9,9 +9,9 @@ def get_pairs_count(collection: list | tuple, m: int) -> int:
         abs_difference_for_estimated_pair = abs(number - m)
 
         if abs_difference_for_estimated_pair in amount_of_each_number:
-            if abs_difference_for_estimated_pair == number and \
-                    amount_of_each_number[abs_difference_for_estimated_pair] > 1:
-                total_unique_pairs += 1
+            if abs_difference_for_estimated_pair == number:
+                if amount_of_each_number[abs_difference_for_estimated_pair] > 1:
+                    total_unique_pairs += 1
             elif abs_difference_for_estimated_pair != number:
                 total_unique_pairs += 1
             amount_of_each_number[abs_difference_for_estimated_pair] = 0

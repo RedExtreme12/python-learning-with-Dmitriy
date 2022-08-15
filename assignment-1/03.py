@@ -6,20 +6,21 @@ def get_count_of_digits_in_int(number: int) -> int:
     return int(math.log10(number)) + 1
 
 
-def get_digit_in_int_by_index(number: int, index: int) -> int:
-    return number // 10 ** (get_count_of_digits_in_int(number) - index - 1) % 10
+def get_digits_list(number: int):
+    number = divmod(number, 10)
 
-
-def get_digits_in_int(number: int):
-    for digit_index in range(get_count_of_digits_in_int(number)):
-        yield get_digit_in_int_by_index(number, digit_index)
+    while number != (0, 0):
+        yield number[1]
+        number = divmod(number[0], 10)
 
 
 def get_checksum_int(card_number: int, parity_determinant: int = None) -> int:
     sum_of_digits = 0
     _parity_determinant = parity_determinant or (get_count_of_digits_in_int(card_number) - 1) % 2
 
-    for i, digit in enumerate(get_digits_in_int(card_number)):
+    digits = reversed(list(get_digits_list(card_number)))
+
+    for i, digit in enumerate(digits):
         _digit = int(digit)
 
         if (i + 1) % 2 == _parity_determinant:

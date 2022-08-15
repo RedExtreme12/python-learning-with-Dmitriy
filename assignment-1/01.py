@@ -2,7 +2,7 @@ import math
 
 
 def get_first_n_digits(num: int, n: int) -> int:
-    return num // 10 ** (int(math.log(num, 10)) - n + 1)
+    return num // 10 ** n
 
 
 def get_last_n_digits(num: int, n: int) -> int:
@@ -21,8 +21,12 @@ def is_eligible(number: int) -> bool:
     first_three_digits = get_first_n_digits(number, 3)
     sum_of_first_three_digits = calculate_sum_of_digits(first_three_digits)
 
+    print(first_three_digits)
+
     last_three_digits = get_last_n_digits(number, 3)
     sum_of_last_three_digits = calculate_sum_of_digits(last_three_digits)
+
+    # print(first_three_digits, last_three_digits)
 
     if sum_of_first_three_digits == sum_of_last_three_digits:
         return True
