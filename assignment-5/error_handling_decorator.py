@@ -71,6 +71,14 @@ class HandleErrorContext(ContextDecorator):
         return self
 
 
+@handle_error(re_raise=False, exc_type=KeyError, delay=20)
+def some_function():
+    x = 1 / 0  # ZeroDivisionError
+
+
 if __name__ == '__main__':
+    some_function()
+    print(1)
+
     with HandleErrorContext(re_raise=False, log_traceback=True, exc_type=ValueError):
         raise ValueError()
