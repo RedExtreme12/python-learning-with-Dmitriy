@@ -1,11 +1,11 @@
 import math
 
 
-def get_first_n_digits(num: int, n: int) -> int:
+def get_first_n_from_left_side(num: int, n: int) -> int:
     return num // 10 ** n
 
 
-def get_last_n_digits(num: int, n: int) -> int:
+def get_last_n_from_right_side(num: int, n: int) -> int:
     return num % (10 ** n)
 
 
@@ -18,12 +18,12 @@ def calculate_sum_of_digits(num: int) -> int:
 
 
 def is_eligible(number: int) -> bool:
-    first_three_digits = get_first_n_digits(number, 3)
+    first_three_digits = get_first_n_from_left_side(number, 3)
     sum_of_first_three_digits = calculate_sum_of_digits(first_three_digits)
 
     print(first_three_digits)
 
-    last_three_digits = get_last_n_digits(number, 3)
+    last_three_digits = get_last_n_from_right_side(number, 3)
     sum_of_last_three_digits = calculate_sum_of_digits(last_three_digits)
 
     # print(first_three_digits, last_three_digits)
