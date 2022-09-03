@@ -7,10 +7,11 @@ def profile(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         start_time = default_timer()
-        result = func(*args, **kwargs)
-        end_time = default_timer()
-
-        print('Time of execution: ', end_time - start_time)
+        try:
+            result = func(*args, **kwargs)
+        finally:
+            end_time = default_timer()
+            print('Time of execution: ', end_time - start_time)
 
         return result
     return wrapper
@@ -18,7 +19,8 @@ def profile(func):
 
 @profile
 def some_function():
-    return sum(range(1000))
+    sum(range(1000))
+    return 10
 
 
 class timer:
@@ -32,5 +34,4 @@ class timer:
 
 
 if __name__ == '__main__':
-    with timer():
-        print(sum(range(1000)))
+    some_function()

@@ -1,14 +1,14 @@
 from collections import defaultdict
 
 
-def reverse_dict(_dict: dict):
+def reverse_dict(dict_: dict):
     reversed_dict = defaultdict(list)
 
-    for old_key, values in _dict.items():
+    for old_key, values in dict_.items():
         for value in values:
             reversed_dict[value].append(old_key)
 
-    return dict(reversed_dict)
+    return reversed_dict
 
 
 if __name__ == '__main__':
