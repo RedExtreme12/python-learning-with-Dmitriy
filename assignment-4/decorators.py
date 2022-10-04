@@ -29,8 +29,7 @@ class Memorize:
             cached_result = self._arguments_with_results.get(key)
 
             if cached_result:
-                # logger.debug(self.ELEMENT_RECEIVED_FROM_CACHE_MESSAGE)
-                print(self.ELEMENT_RECEIVED_FROM_CACHE_MESSAGE)
+                logger.debug(self.ELEMENT_RECEIVED_FROM_CACHE_MESSAGE)
                 return cached_result
             else:
                 result = func(*args, **kwargs)
@@ -44,8 +43,7 @@ class Memorize:
         for _ in range(count_of_elements_for_delete):
             self._arguments_with_results.pop(random.choice(tuple(self._arguments_with_results.keys())))
 
-            # logger.debug(self.ELEMENT_DELETED_MESSAGE)
-            print(self.ELEMENT_DELETED_MESSAGE)
+            logger.debug(self.ELEMENT_DELETED_MESSAGE)
 
     def _add_results_to_dict(self, key: tuple[tuple, tuple, tuple], value: Any) -> None:
         if self._max_size and len(self._arguments_with_results) == self._max_size:
@@ -53,8 +51,7 @@ class Memorize:
 
         self._arguments_with_results[key] = value
 
-        # logger.debug(self.ELEMENT_ADDED_MESSAGE)
-        print(self.ELEMENT_ADDED_MESSAGE)
+        logger.debug(self.ELEMENT_ADDED_MESSAGE)
 
 
 class Convolve:
