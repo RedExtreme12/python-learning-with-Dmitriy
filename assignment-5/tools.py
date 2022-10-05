@@ -10,14 +10,14 @@ def merge_json(*dicts):
             result_dict_value = result_dict.get(key, None)
 
             if type(result_dict_value) is type(value):
-                if isinstance(value, immutable_types):
-                    result_dict[key] = value
-                elif isinstance(value, list):
+                if isinstance(value, list):
                     result_dict_value.extend(value)
                 elif isinstance(value, dict):
                     result_dict[key] = merge_json(result_dict_value, value)
+                else:
+                    result_dict[key] = value
             else:
-                result_dict[key] = value
+                raise TypeError('Value type does not match!')
 
     return result_dict
 

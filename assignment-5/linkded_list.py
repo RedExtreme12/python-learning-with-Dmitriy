@@ -5,7 +5,8 @@ from itertools import pairwise
 class Node:
 
     def __init__(self, value: Union['Node', Any], next_: Union['Node', None] = None):
-        self._next = self._value = None
+        self._next = None
+        self._value = None
         self.next = next_
         self.value = value
 
@@ -26,25 +27,24 @@ class Node:
         self._value = value
 
     def _flatten_nodes(self):
-        current = self
-
-        stack = [current]
+        stack = [self]
 
         while stack:
+            # print(stack)
+            # for elem in stack:
+            #     print(elem, elem.value)
+
             current = stack.pop()
+            if current is None:
+                break
 
             if not isinstance(current.value, Node):
                 yield current
-
-            if isinstance(current.value, Node):
-                stack.append(current.next)
-                current = current.value
-            elif current.next is not None:
-                current = current.next
+                if current.next:
+                    stack.append(current.next)
             else:
-                continue
-
-            stack.append(current)
+                stack.append(current.next)
+                stack.append(current.value)
 
     def __iter__(self):
         return (node.value for node in self._flatten_nodes())
@@ -52,8 +52,8 @@ class Node:
     def flatten(self) -> None:
         flattened_nodes = self._flatten_nodes()
 
-        for node_pair in pairwise(flattened_nodes):
-            node_pair[0].next = node_pair[1]
+        for predecessor, successor in pairwise(flattened_nodes):
+            predecessor.next = successor
 
 
 if __name__ == '__main__':
