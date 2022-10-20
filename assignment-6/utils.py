@@ -10,8 +10,7 @@ class SafeRequest:
     _not_set = object()
 
     def __init__(self, timeout: Union[float, timedelta] = 3.0, default: Any = _not_set):
-        self._timeout = None
-        self.timeout = timeout
+        self._timeout = timeout
         self._default = default
 
     @property
