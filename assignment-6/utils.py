@@ -34,8 +34,7 @@ class SafeRequest:
     def _return_default(self):
         if self.default is self._not_set:
             raise
-        else:
-            return self.default
+        return self.default
 
     async def _make_request_async(self, url):
         timeout = aiohttp.ClientTimeout(total=self.timeout.total_seconds())
