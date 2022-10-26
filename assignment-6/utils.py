@@ -10,7 +10,8 @@ class SafeRequest:
     _not_set = object()
 
     def __init__(self, timeout: Union[float, timedelta] = 3.0, default: Any = _not_set):
-        self._timeout = timeout
+        self._timeout = None
+        self.timeout = timeout
         self._default = default
 
     @property
@@ -24,9 +25,9 @@ class SafeRequest:
     @timeout.setter
     def timeout(self, timeout_: Union[float, timedelta]):
         if isinstance(timeout_, timedelta):
-            self._timeout = timeout_.seconds
-        elif isinstance(timeout_, float):
             self._timeout = timeout_
+        elif isinstance(timeout_, float):
+            self._timeout = timedelta(seconds=timeout_)
         else:
             raise TypeError('Incorrect type of timeout')
 
@@ -37,7 +38,7 @@ class SafeRequest:
             return self.default
 
     async def _make_request_async(self, url):
-        timeout = aiohttp.ClientTimeout(total=self._timeout)
+        timeout = aiohttp.ClientTimeout(total=self.timeout.total_seconds())
 
         async with aiohttp.ClientSession() as session:
             try:
@@ -47,25 +48,29 @@ class SafeRequest:
             except asyncio.exceptions.TimeoutError:
                 return self._return_default()
 
-    def invoke(self, url: str):
-        result = asyncio.run(self._make_request_async(url))
-        return result
+    async def invoke(self, url: str):
+        return await self._make_request_async(url)
 
     def __call__(self, url: str):
         try:
-            response = requests.get(url, timeout=self.timeout)
+            response = requests.get(url, timeout=self.timeout.total_seconds())
         except requests.exceptions.Timeout:
             return self._return_default()
 
         try:
             response.raise_for_status()
         except requests.exceptions.HTTPError:
-            return self._return_default()
+            if response.status_code == 404:
+                return self._return_default()
+            raise
         else:
-            return response.text
+            return response.content
 
 
 if __name__ == '__main__':
-    sf = SafeRequest(timeout=0.01, default=False)
+    sf = SafeRequest(default=False, timeout=3.0)
+    # sf.timeout = 2.0
     # sf('https://afternoon-ravine-94298.herokuapp.com/api/v1/')
+    asyncio.run(sf.invoke('https://afternoon-ravine-94298.herokuapp.com/api/v1/'))
     print(sf('https://afternoon-ravine-94298.herokuapp.com/api/v1/'))
+    print(sf('https://www.google.com/test'))

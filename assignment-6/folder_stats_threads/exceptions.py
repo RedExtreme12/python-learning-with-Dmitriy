@@ -1,0 +1,2 @@
+class StatNotCalculatedError(Exception):
+    pass
