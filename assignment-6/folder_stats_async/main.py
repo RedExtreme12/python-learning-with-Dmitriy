@@ -130,7 +130,7 @@ async def calculate_stat_async(path: str):
     return storage_stats
 
 
-PATH_FOR_STAT = '/Users/dzmitryrahozenka'
+PATH_FOR_STAT = '/Users/dzmitryrahozenka/Documents'
 
 
 if __name__ == '__main__':
