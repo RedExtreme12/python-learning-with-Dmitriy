@@ -20,8 +20,7 @@ def calculate_stats(path: str):
         init_future = executor.submit(fh)
         futures.append(init_future)
 
-        for future in concurrent.futures.as_completed(futures):
-            future.result()
+        concurrent.futures.wait(futures, return_when=concurrent.futures.ALL_COMPLETED)
 
     return ts_dict
 
