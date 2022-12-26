@@ -1,8 +1,8 @@
+import objgraph
 from copy import deepcopy
 
 
 def merge_json(*dicts):
-    immutable_types = (int, float, bool, str, frozenset, tuple)
     result_dict: dict = deepcopy(dicts[0])
 
     for dict_ in dicts[1:]:
@@ -23,7 +23,11 @@ def merge_json(*dicts):
 
 
 if __name__ == '__main__':
+
     lhs = {'s': True, 'x': [2, 3], 'y': {'a': 1, 'b': 2, 'c': [11]}}
     rhs = {'s': False, 'x': [3, 4], 'y': {'a': 3, 'c': [12]}}
     expected = {'s': False, 'x': [2, 3, 3, 4], 'y': {'a': 3, 'b': 2, 'c': [11, 12]}}
-    assert expected == merge_json(lhs, rhs)
+    result = merge_json(lhs, rhs)
+    assert expected == result
+
+    objgraph.show_refs(result, filename='result-graph.png')

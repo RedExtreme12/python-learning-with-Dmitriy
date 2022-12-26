@@ -16,7 +16,7 @@ logger.addHandler(handler)
 def handle_error(
         re_raise: bool = True,
         log_traceback: bool = True,
-        exc_type: Exception or tuple[Exception, ...] = Exception,
+        exc_type: Exception | tuple = Exception,
         tries: int | None = 1,
         delay: int | float = 0,
         backoff: int = 1
@@ -24,29 +24,23 @@ def handle_error(
     def inner(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            exception = None
             _delay = delay
 
             iterator = range(tries) if tries is not None else count(0)
 
-            for _ in iterator:
+            for attempt in iterator:
+                logger.debug(f'The attempt {attempt} has begun')
                 try:
                     return func(*args, **kwargs)
                 except exc_type as err:
-                    print(exc_type)
-                    if re_raise:
-                        print(re_raise)
-                        exception = err
-                    if log_traceback:
-                        logger.exception(str(err))
-                except Exception as err:
-                    exception = err
+                    if (attempt + 1) == tries:
+                        if re_raise:
+                            raise err
+                        if log_traceback:
+                            logger.exception(str(err))
 
                 time.sleep(_delay)
                 _delay *= backoff
-
-            if exception:
-                raise exception
 
         return wrapper
 
@@ -73,14 +67,11 @@ class HandleErrorContext(ContextDecorator):
         return self
 
 
-@handle_error(re_raise=False, exc_type=KeyError, delay=2)
+@handle_error(re_raise=True, exc_type=(ValueError, ZeroDivisionError), delay=1, tries=3, log_traceback=False)
 def some_function():
-    x = 1 / 0  # ZeroDivisionError
+    x = 1 / 0
 
 
 if __name__ == '__main__':
     some_function()
     print(1)
-
-    # with HandleErrorContext(re_raise=False, log_traceback=True, exc_type=ValueError):
-    #     raise ValueError()

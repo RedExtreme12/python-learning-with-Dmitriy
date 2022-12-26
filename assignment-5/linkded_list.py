@@ -7,6 +7,7 @@ class Node:
     def __init__(self, value: Union['Node', Any], next_: Union['Node', None] = None):
         self._next = None
         self._value = None
+
         self.next = next_
         self.value = value
 
@@ -30,9 +31,6 @@ class Node:
         stack = [self]
 
         while stack:
-            # print(stack)
-            # for elem in stack:
-            #     print(elem, elem.value)
 
             current = stack.pop()
             if current is None:

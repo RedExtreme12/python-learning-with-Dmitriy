@@ -16,14 +16,17 @@ logger.addHandler(handler)
 @contextlib.contextmanager
 def handle_error_context(re_raise: bool = True,
                          log_traceback: bool = True,
-                         exc_type: Exception or tuple[Exception, ...] = Exception,):
+                         exc_type: Exception or tuple[Exception, ...] = Exception,
+                         attempt_number: int = 0,
+                         tries: int = 1):
     try:
         yield
     except exc_type as err:
-        if re_raise:
-            raise err
-        if log_traceback:
-            logger.exception(str(err))
+        if (attempt_number + 1) == tries:
+            if re_raise:
+                raise err
+            if log_traceback:
+                logger.exception(str(err))
 
 
 def handle_error(
@@ -37,13 +40,13 @@ def handle_error(
     def inner(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            exception = None
             _delay = delay
 
             iterator = range(tries) if tries is not None else count(0)
 
-            for _ in iterator:
-                with handle_error_context(re_raise, log_traceback, exc_type):
+            for attempt_number in iterator:
+                logger.debug(f'The attempt {attempt_number} has begun!')
+                with handle_error_context(re_raise, log_traceback, exc_type, attempt_number, tries):
                     return func(*args, **kwargs)
 
                 time.sleep(_delay)
@@ -54,10 +57,6 @@ def handle_error(
     return inner
 
 
-# if __name__ == '__main__':
-#     with handle_error_context(re_raise=False, log_traceback=True, exc_type=ValueError):
-#         raise ValueError()
-
 @handle_error(re_raise=False, delay=10)
 def some_function():
     x = 1 / 0  # ZeroDivisionError
@@ -66,5 +65,3 @@ def some_function():
 if __name__ == '__main__':
     some_function()
     print(1)
-
-
