@@ -1,7 +1,8 @@
-import asyncio
+from pprint import pprint
 from datetime import timedelta
 from typing import Union, Any
 import requests
+import asyncio
 import aiohttp
 
 
@@ -11,6 +12,7 @@ class SafeRequest:
 
     def __init__(self, timeout: Union[float, timedelta] = 3.0, default: Any = _not_set):
         self._timeout = None
+
         self.timeout = timeout
         self._default = default
 
@@ -70,6 +72,6 @@ if __name__ == '__main__':
     sf = SafeRequest(default=False, timeout=3.0)
     # sf.timeout = 2.0
     # sf('https://afternoon-ravine-94298.herokuapp.com/api/v1/')
-    asyncio.run(sf.invoke('https://afternoon-ravine-94298.herokuapp.com/api/v1/'))
-    print(sf('https://afternoon-ravine-94298.herokuapp.com/api/v1/'))
-    print(sf('https://www.google.com/test'))
+    # asyncio.run(sf.invoke('https://afternoon-ravine-94298.herokuapp.com/api/v1/'))
+    # print(sf('https://afternoon-ravine-94298.herokuapp.com/api/v1/'))
+    pprint(sf('https://www.google.com/'))

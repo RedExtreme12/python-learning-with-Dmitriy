@@ -3,8 +3,8 @@ from exceptions import StatNotCalculatedError
 from thread_safe_containers.thread_safe_dict import ThreadSafeDict
 from thread_safe_containers.thread_safe_set import ThreadSafeSet
 from handle_error_context import HandleErrorContext
+from folder_info import FolderInfo
 
-from dataclasses import dataclass
 from concurrent.futures import ThreadPoolExecutor, Future
 from pathlib import Path
 from functools import partial
@@ -12,13 +12,6 @@ import hashlib
 import logging
 
 logger = logging.getLogger(f'logger_conf.{__name__}')
-
-
-@dataclass
-class FolderInfo:
-    total_files: int
-    total_size: int  # in bytes
-    check_sum: str
 
 
 class FolderHandler:
