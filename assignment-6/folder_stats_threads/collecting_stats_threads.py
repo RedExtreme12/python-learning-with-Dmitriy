@@ -2,11 +2,10 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 import concurrent
 
-from folder_handler import FolderHandler
-from thread_safe_containers.thread_safe_dict import ThreadSafeDict
-from thread_safe_containers.thread_safe_set import ThreadSafeSet
-from folder_info import FolderInfo
-import logger_conf
+from .folder_handler import FolderHandler
+from .thread_safe_containers.thread_safe_dict import ThreadSafeDict
+from .thread_safe_containers.thread_safe_set import ThreadSafeSet
+from .folder_info import FolderInfo
 
 
 def calculate_stats(path: str) -> FolderInfo | None:

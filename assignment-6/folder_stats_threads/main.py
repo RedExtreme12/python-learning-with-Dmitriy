@@ -2,7 +2,7 @@ from collecting_stats_threads import calculate_stats
 import logger_conf
 
 
-PATH_FOR_STAT = '/Users/dzmitryrahozenka/Documents/Crypto'
+PATH_FOR_STAT = '/Users/dzmitryrahozenka/Downloads/'
 
 
 if __name__ == '__main__':

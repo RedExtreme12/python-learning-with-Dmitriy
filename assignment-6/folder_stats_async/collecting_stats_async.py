@@ -1,9 +1,9 @@
-from files_utils import (
+from .files_utils import (
     get_file_size, get_abs_name_of_file,
     check_dir_is_available, get_file_checksum,
     update_checksum
 )
-from folder_info import FolderInfo
+from .folder_info import FolderInfo
 
 from pathlib import Path
 import asyncio
@@ -26,6 +26,8 @@ def generate_folder_statistics(folder: Path, storage_stats: dict[Path, FolderInf
             total_size += file_obj_stat.total_size
 
             update_checksum(file_obj, checksum_folder, file_obj_stat.check_sum)
+
+    checksum_folder.update(folder.name.encode())
 
     folder_stat = FolderInfo(total_files, total_size, checksum_folder.hexdigest())
     return folder_stat

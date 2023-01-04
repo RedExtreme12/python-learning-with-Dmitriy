@@ -1,9 +1,9 @@
-from utils import get_file_hash
-from exceptions import StatNotCalculatedError
-from thread_safe_containers.thread_safe_dict import ThreadSafeDict
-from thread_safe_containers.thread_safe_set import ThreadSafeSet
-from handle_error_context import HandleErrorContext
-from folder_info import FolderInfo
+from .utils import get_file_hash
+from .exceptions import StatNotCalculatedError
+from .thread_safe_containers.thread_safe_dict import ThreadSafeDict
+from .thread_safe_containers.thread_safe_set import ThreadSafeSet
+from .handle_error_context import HandleErrorContext
+from .folder_info import FolderInfo
 
 from concurrent.futures import ThreadPoolExecutor, Future
 from pathlib import Path
@@ -90,6 +90,9 @@ class FolderHandler:
 
                 result_hash.append(folder_stat.check_sum)
 
+        root_folder_hash_of_name = hashlib.md5(self._source_folder.name.encode()).hexdigest()
+        result_hash.append(root_folder_hash_of_name)
+
         return ''.join(result_hash)
 
     def _normalize_checksum(self) -> None:
@@ -133,6 +136,7 @@ class FolderHandler:
             else:
                 checksums = self._get_checksums_of_dirs()
                 self._increase_stat(check_sum=checksums)
+
                 self._normalize_checksum()
 
                 self._storage[self._source_folder.absolute()] = self._stat
